@@ -2,12 +2,16 @@ import sys
 import os
 from fastapi.testclient import TestClient
 
-# SYSTEM CONFIGURATION: Ensuring Python finds the backend directory 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+current_dir = os.path.dirname(__file__)
+root_dir = os.path.abspath(os.path.join(current_dir, '..'))
+backend_dir = os.path.abspath(os.path.join(current_dir, '..', 'backend'))
+
+sys.path.append(root_dir)
+sys.path.append(backend_dir)
 
 from backend.main import app
 
-# INITIALIZING THE TEST CLIENT
+# --- INITIALIZING THE TEST CLIENT ---
 client = TestClient(app)
 
 # 1. TEST: Root API Connection (Read)
