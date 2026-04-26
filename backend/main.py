@@ -90,3 +90,49 @@ async def get_performance():
         "college": "Tabor College",
         "stats_history": performance_data
     }
+    def update_match_stats(self, match_id: int, goals: int, assists: int, interceptions: int):
+        """Updates an existing match record (The 'U' in CRUD)."""
+        conn = get_db_connection()
+        cur = conn.cursor()
+        try:
+            cur.execute(
+                "UPDATE match_stats SET goals = %s, assists = %s, interceptions = %s WHERE id = %s",
+                (goals, assists, interceptions, match_id)
+            )
+            conn.commit()
+            return cur.rowcount > 0 # Returns True if a row was updated
+        except Exception as e:
+            print(f"Update Error: {e}")
+            return False
+        finally:
+            cur.close()
+            conn.close()
+
+    def delete_match_record(self, match_id: int):
+        """Deletes a match record from the database (The 'D' in CRUD)."""
+        conn = get_db_connection()
+        cur = conn.cursor()
+        try:
+            cur.execute("DELETE FROM match_stats WHERE id = %s", (match_id,))
+            conn.commit()
+            return cur.rowcount > 0
+        except Exception as e:
+            print(f"Delete Error: {e}")
+            return False
+        finally:
+            cur.close()
+            conn.close()
+
+@app.put("/update-match/{match_id}")
+async def update_match(match_id: int, goals: int, assists: int, interceptions: int):
+    success = soccer_service.update_match_stats(match_id, goals, assists, interceptions)
+    if not success:
+        raise HTTPException(status_code=404, detail="Match record not found.")
+    return {"message": f"Match {match_id} updated successfully."}
+
+@app.delete("/delete-match/{match_id}")
+async def delete_match(match_id: int):
+    success = soccer_service.delete_match_record(match_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Match record not found.")
+    return {"message": f"Match {match_id} deleted successfully."}
