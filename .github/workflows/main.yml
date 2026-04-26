@@ -38,6 +38,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install fastapi uvicorn google-generativeai psycopg2-binary pytest httpx
         
+    # --- CRITICAL STEP: Creating the table in the GitHub Environment ---
+    - name: Setup Database Table
+      run: |
+        PGPASSWORD=password psql -h localhost -U postgres -d soccer_db -c "CREATE TABLE IF NOT EXISTS match_stats (id SERIAL PRIMARY KEY, athlete_id INT, goals INT, assists INT, interceptions INT, match_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);"
+
     - name: Run Tests
       env:
         DB_HOST: localhost
