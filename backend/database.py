@@ -3,8 +3,8 @@ import os
 
 def get_db_connection():
     return psycopg2.connect(
-        host=os.getenv("DB_HOST", "localhost"),
-        database=os.getenv("DB_NAME", "soccer_db"),
-        user=os.getenv("DB_USER", "postgres"),
-        password=os.getenv("DB_PASS", "password") 
+        host="localhost",
+        database="soccerpath_db",  
+        user="postgres",
+        password="password"   
     )
