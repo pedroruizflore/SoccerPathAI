@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException
-from database import get_db_connection
+from .database import get_db_connection
 import google.generativeai as genai
 from typing import List, Optional
 import os

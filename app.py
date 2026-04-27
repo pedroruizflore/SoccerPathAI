@@ -14,7 +14,7 @@ assists = st.sidebar.number_input("Assists", min_value=0, step=1)
 interceptions = st.sidebar.number_input("Interceptions", min_value=0, step=1)
 
 if st.sidebar.button("Save Match & Get Feedback"):
-    url = f"http://127.0.0.1:8000/add-match?goals={goals}&assists={assists}&interceptions={interceptions}"
+    url = f"http://127.0.0.1:8001/add-match?goals={goals}&assists={assists}&interceptions={interceptions}"
     response = requests.post(url)
     if response.status_code == 200:
         st.sidebar.success("Match Saved!")
@@ -24,7 +24,7 @@ if st.sidebar.button("Save Match & Get Feedback"):
 
 # Main area: Performance History
 st.write("### Your Season Progress")
-history_response = requests.get("http://127.0.0.1:8000/my-performance")
+history_response = requests.get("http://127.0.0.1:8001/my-performance")
 
 if history_response.status_code == 200:
     data = history_response.json()["stats_history"]
