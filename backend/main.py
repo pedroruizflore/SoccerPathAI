@@ -3,6 +3,7 @@ from .database import get_db_connection
 import google.generativeai as genai
 from typing import List, Optional
 import os
+import google.generativeai as genai
 
 app = FastAPI()
 
@@ -10,8 +11,8 @@ app = FastAPI()
 class SoccerPathAI:
     def __init__(self):
         # AI Configuration
-        self.api_key = os.getenv("GEMINI_API_KEY", "AIzaSyBqJZY3gR9869d-ohQQFL1eV_m9GCDqk8s")
-        genai.configure(api_key=self.api_key)
+        api_key = os.getenv("GEMINI_API_KEY")
+        genai.configure(api_key=api_key)
         self.model = genai.GenerativeModel('models/gemini-2.5-flash')
 
     def save_match_to_db(self, goals: int, assists: int, interceptions: int):
