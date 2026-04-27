@@ -49,5 +49,6 @@ jobs:
         DB_NAME: soccer_db
         DB_USER: postgres
         DB_PASS: password
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }} # O GitHub puxa do segredo que você criou
       run: |
         pytest
